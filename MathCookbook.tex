@@ -43,5 +43,23 @@
 		\bm{x}_{n+1} &= \bm{x}_n - \gamma[\bm{H} f(\bm{x}_n)]^{-1} \nabla f(\bm{x_n})
  \end{align}
 
+ \section{Newton's Method}
+ \begin{align}
+ 		x_{n+1} &= x_n + \frac{-f'(x_n)}{f''(x_n)} \\
+		\bm{x}_{n+1} &= \bm{x}_n - \gamma[\bm{H} f(\bm{x}_n)]^{-1} \nabla f(\bm{x_n})
+ \end{align}
+
+\section{Matrix Rank}
+For any $n \times m$ matrix $\bm{A}$:
+\begin{align}
+	\text{rank}(\bm{A}) &= \text{rank}(\bm{A}^T) = \text{row-rank}(\bm{A}) = \text{col-rank}(\bm{A})\\
+	& \leq \min(m, n)
+\end{align}
+If $\bm{A}$ is real valued:
+\begin{equation}
+	\text{rank}(\bm{A}) = \text{rank}(\bm{A}^T \bm{A}) = \text{rank}(\bm{A} \bm{A}^T)
+\end{equation}
+
+
 
 \end{document}

@@ -1,3 +1,4 @@
 Output
 *.pdf
 *.gz
+*.fuse_hidden*
