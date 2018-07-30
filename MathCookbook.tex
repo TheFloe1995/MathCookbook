@@ -60,6 +60,51 @@ If $\bm{A}$ is real valued:
 	\text{rank}(\bm{A}) = \text{rank}(\bm{A}^T \bm{A}) = \text{rank}(\bm{A} \bm{A}^T)
 \end{equation}
 
+\chapter{Rauch-Tung-Striebel Smoother}
+\section{Forward aka EKF}
+In the prediction step, based on the current system state $x$ and inputs $u$ at time $k$ and the dynamic model, a prediction of the system state at the next time step, $\widetilde{x}_{k+1}$, is made. The EKF's state prediction is based on the non-linear system equations  \ref{systemstatesnonlinear} and \ref{system_output_non-linear} whereas the covariance matrix $\widetilde{P} _{k+1}$ has to be predicted through the linearized system equations  \ref{systemstates} and \ref{systemoutput}. In the prediction, the state transition matrix $\Phi$, its time integral $\Psi$ and the input noise covariance matrix $Q$ are involved. System outputs $\widetilde{y}_{k+1}$ are predicted based on the model states and system parameters.
+
+\begin{equation}
+\widetilde{x} _{k+1} = \widehat{x} _{k} + \int_{t_{k}}^{t_{k+1}} f(x(t), u(t), \Theta)dt \label{KalmanStatePrediction}
+\end{equation}
+\begin{equation}
+\widetilde{P} _{k+1} = \Phi_{k} \widehat{P}_k\Phi_{k}^T + \Psi_{k}B_{k}QB_{k}^T\Psi_{k}^T
+\label{CovariancePrediction}
+\end{equation}
+\begin{equation}
+\widetilde{y}_{k+1}= g(\widetilde{x} _{k+1},\Theta) \label{SystemOutputsKalman}
+\end{equation}\\
+In the update step, predicted system outputs $\widetilde{y}_{k+1}$ are compared to the according measured values $z_{k+1}$ as seen in Equation \ref{KalmanStateUpdate}. Based on this prediction error, the model states are corrected. For the update, the Kalman gain matrix in Equation \ref{KalmanGain} is needed. It can be interpreted as weighting matrix for the noise of input and output measurements. 
+
+\begin{equation}
+K_{k+1} = \widetilde{P}_{k+1}C_{k+1}^T (C_{k+1}\widetilde{P}_{k+1}C_{k+1}^T + R_{k+1})^{-1} \label{KalmanGain}
+\end{equation}
+\begin{equation}
+\widehat{x} _{k+1} = \widetilde{x} _{k+1} + K_{k+1}(z_{k+1} - \widetilde{y}_{k+1}) \label{KalmanStateUpdate}
+\end{equation}
+\begin{equation}
+\widehat{P} _{k+1} = (I - K_{k+1}C_{k+1})\widetilde{P}_{k+1}(I - K_{k+1}C_{k+1})^T + K_{k+1}R_{k+1}K_{k+1}^T \label{CovarianceUpdate}
+\end{equation}\\
+For the considered time step, the corrected model states $\widehat{x} _{k+1}$ from equation \ref{KalmanStateUpdate} and the respective covariance matrix $ \widehat{P}_{k+1} $ from equation \ref{CovarianceUpdate} are handed on to Equations \ref{KalmanStatePrediction} and \ref{CovariancePrediction} for the next time step. \newline
+
+
+
+\section{Backward}
+When future data is present, overall accuracy of results can be increased through considering those data points, too. As \cite{JS_SA} suggested, an intuitive approach to considering future data in the estimation is to run a backwards iteration of EKF and afterwards combine information from both state estimations. It can be seen from Equation \ref{kalman smooth} and \ref{state smooth} that the RTS backwards iteration is a more direct approach. The Rauch-Tung-Striebel smoother belongs to the class of fixed interval smoothers. Those utilize all available data for the smoothing of each time step. This property was used to obtain an estimation of the airplanes' actual state in the smoothed states $x^{[s]}$. \cite{RTS_application}  Utilizing the predicted and updated states and covariance matrices as well as the state transition matrix, smoothed states are calculated directly.
+
+\begin{equation}
+K_{k}^{[s]} = \widehat{P}_{k}\Phi_{k+1}^T\widetilde{P}_{k+1}^{-1} \label{kalman smooth}
+\end{equation}
+\begin{equation}
+{x} _{k}^{[s]} = \widehat{x} _{k} + K_{k}^{[s]}({x} _{k+1}^{[s]} - \widetilde{x}_{k+1}) \label{state smooth}
+\end{equation}
+\begin{equation}
+P_{k}^{[s]} = \widehat{P}_{k} + K_{k}^{[s]}(P_{k+1}^{[s]} - \widetilde{P}_{k+1})K_{k}^{[s]T}\label{P smoothed}
+\end{equation}\\
+
+Equation \ref{P smoothed}, the smoothed covariance matrix, is not needed for state estimation but can be used for evaluation of results.
+
+
 
 
 \end{document}
