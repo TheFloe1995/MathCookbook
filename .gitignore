@@ -2,3 +2,6 @@ Output
 *.pdf
 *.gz
 *.fuse_hidden*
+*.aux
+*.log
+*.out
