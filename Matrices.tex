@@ -1,6 +1,23 @@
+%!TEX root = MathCookbook.tex
 \chapter{Matrices and vectors}
 
-\section{Matrix Rank}
+\section{Basics}
+\begin{align}
+  (\bm{ABC}\ldots)^{-1} &= \ldots \bm{C}^{-1} \bm{B}^{-1} \bm{A}^{-1} \\
+  (\bm{ABC}\ldots)^{T} &= \ldots \bm{C}^{T} \bm{B}^{T} \bm{A}^{T} \\
+  (\bm{A}^T)^{-1} &= (\bm{B}^{-1})^T \\
+  (\bm{A} + \bm{B})^T &= \bm{A}^T + \bm{B}^T
+\end{align}
+
+\section{Trace}
+\begin{align}
+  Tr(\bm{A}) &= Tr(\bm{A^T}) \\
+  Tr(\bm{A} \bm{B} \ldots) &= Tr(\ldots \bm{A} \bm{B}) = Tr(\bm{B}\ldots \bm{A}) \\
+  Tr(\bm{aa}^T) &= \bm{a}^T \bm{a}\\
+  Tr(\bm{A}) &= \sum_i \lambda_i, \qquad \lambda_i = eig(\bm{A})
+\end{align}
+
+\section{Rank}
 For any $n \times m$ matrix $\bm{A}$:
 \begin{align}
 	\text{rank}(\bm{A}) &= \text{rank}(\bm{A}^T) = \text{row-rank}(\bm{A}) = \text{col-rank}(\bm{A})\\
@@ -9,4 +26,10 @@ For any $n \times m$ matrix $\bm{A}$:
 If $\bm{A}$ is real valued:
 \begin{equation}
 	\text{rank}(\bm{A}) = \text{rank}(\bm{A}^T \bm{A}) = \text{rank}(\bm{A} \bm{A}^T)
+\end{equation}
+
+\section{Eigenvalues and Eigenvectors}
+Eigenvectors $\bm{v}_i$ and eigenvalues $\lambda_i$ of matrix $\bm{A}$ satisfy:
+\begin{equation}
+  \bm{Av}_i = \lambda_i\bm{v}_i
 \end{equation}
